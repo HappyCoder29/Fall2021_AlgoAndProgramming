@@ -105,6 +105,7 @@ public class Main {
         merge(arr, low, high);  // O(n)
     }
 
+    // 3 * O(n) ~= O(n)
     private static void merge(int[] arr, int low, int high){
 
         int mid = (low + high)/2;
@@ -186,6 +187,7 @@ public class Main {
         return wall;
     }
 
+    // O(n Log n) Average case
     private static void findKthLargest(int[] arr, int k){
         findKthLargest(arr, k, 0, arr.length -1);
     }
@@ -202,6 +204,7 @@ public class Main {
         }
     }
 
+    // O( 2*n) ~= O(n)
     private static void countSort(int[] arr, int RANGE){
         int[] countArr = new int[RANGE];
         for (int j : arr) {
@@ -220,6 +223,7 @@ public class Main {
         }
     }
 
+    // O(n)
     private static void dutchFlagProblem(int[] arr, int pivot){
         int low = 0;
         int mid = 0;
@@ -239,6 +243,8 @@ public class Main {
         }
     }
 
+    // Sorting of intervals would be O(nLogn) and then finding intervals would be O(n)
+    // Total complexity would be O(nLogn)
     private static ArrayList<Interval> mergeIntervals(ArrayList<Interval> intervals){
         if(intervals == null || intervals.size() <= 1  )
             return  intervals;
@@ -274,8 +280,6 @@ public class Main {
         }
 
         return  merged;
-
-
     }
 }
 
