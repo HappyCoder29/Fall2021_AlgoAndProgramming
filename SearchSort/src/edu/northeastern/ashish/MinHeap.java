@@ -91,6 +91,7 @@ public class MinHeap {
             if(leftChild >= size ){
                 return;
             }else{
+                // My left child exists
                 minIndex = leftChild;
             }
         }else{
