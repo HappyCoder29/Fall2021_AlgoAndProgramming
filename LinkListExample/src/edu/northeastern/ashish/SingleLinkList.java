@@ -362,25 +362,176 @@ public class SingleLinkList <T> {
         return  secondHalf;
     }
 
+    /// region Linkedlist class 2
 
-    public Node<T> sortedMerge(Node<T> node1, Node<T> node2){
-        Node<T> result = null;
-        if(node1 == null){
-            return  node2;
+    public void zipMerge(){
+        if(head == null || head.next == null){
+            return;
         }
+
+        Node<T> secondHalf = breakListInHalf();
+
+        secondHalf = reverseList(secondHalf);
+
+        head = zipMerge(head, secondHalf, true);
+
+    }
+
+    private Node<T> zipMerge(Node<T> node1, Node<T> node2, boolean bSwitch){
+
+        Node<T> result = null;
+
+        if(node1 == null){
+            return node2;
+        }
+
         if(node2 == null){
             return  node1;
         }
 
-        if(node1.compareTo((T) node2) < 0){
+        if(bSwitch == true){
             result = node1;
-            result.next = sortedMerge(node1.next, node2);
+            result.next = zipMerge(node1.next, node2, false);
         }else{
             result = node2;
-            result.next = sortedMerge(node1, node2.next);
+            result.next = zipMerge(node1, node2.next, true);
         }
-        return  result;
+        return result;
+
     }
+
+
+    public void deleteNThFromTheEnd(int n){
+        if(n <= 0 ){
+            return ;
+        }
+
+        Node<T> front = head;
+        Node<T> back = head;
+
+        for(int i = 0 ; i < n -1; i ++){
+            if(front != null){
+                front = front.next;
+            }
+            else{
+                return ;
+            }
+        }
+
+        if(back == head){
+            head = head.next;
+            return;
+        }
+
+        // At this point back is at n-1 from start
+        if(back.next != null){
+            back.next = back.next.next;
+        }
+    }
+
+
+    //O(n)
+    public void swapNodeInPairs(){
+
+        if(head == null || head.next == null){
+            return;
+        }
+
+        Node first = head;
+        Node second = head.next;
+
+        while(second != null){
+            T temp = (T) first.data;
+            first.data = second.data;
+            second.data = temp;
+
+            first = first.next.next;
+            second = second.next.next;
+
+        }
+
+    }
+
+
+    private Node<T> getLastNode(Node<T> node){
+        if(node == null || node.next == null){
+            return  node;
+        }
+        Node<T> temp = node;
+        while(temp.next != null){
+            temp = temp.next;
+        }
+        return  temp;
+    }
+
+
+
+
+    public void reverseInKGroups(int k){
+
+        if(k <= 1 || head == null || head.next == null){
+            return;
+        }
+
+        Node<T> tempHead = head;
+        Node<T> temp = head;
+
+        Node remaining = head;
+
+        boolean isFirst = true;
+        while(remaining != null){
+            for(int i = 0; i < k- 1; i ++){
+                if(temp.next != null){
+                    temp = temp.next;
+                }
+            }
+            remaining = temp.next;
+            temp.next = null;
+            tempHead = reverseList(tempHead);
+            if(isFirst == true){
+                head = tempHead;
+                isFirst = false;
+            }
+            getLastNode(tempHead).next = remaining;
+            temp = remaining;
+        }
+
+    }
+
+
+    public void rotateList(int n){
+        n = n % this.length();
+        if(head == null || head.next == null || n <= 0 ){
+            return;
+        }
+
+
+        // Move temp to n places
+        Node<T> temp = head;
+        for(int i = 0 ; i <  this.length() - n - 1 ; i ++){
+            if(temp != null){
+                temp = temp.next;
+            }
+            else{
+                return ;
+            }
+        }
+
+        Node<T> remaining  = temp.next;
+        temp.next = null;
+
+        remaining = reverseList(remaining);
+
+        Node<T> last = getLastNode(remaining);
+        last.next = head;
+        head = remaining;
+    }
+
+
+
+
+    /// endregion
+
 
 
 }
