@@ -3,6 +3,9 @@ package edu.northeastern.ashish;
 import java.util.*;
 
 public class Tree <T>{
+
+    /// region Class 1
+
     public Node<T> root;
 
     public Tree(){
@@ -325,6 +328,187 @@ public class Tree <T>{
                 areSameNodes(tree.left, subTree) ||
                 areSameNodes(tree.right, subTree);
     }
+
+    /// endregion
+
+
+
+    /// region Class 2
+
+    public void mirrorTree(){
+        mirrorTree(root);
+    }
+    private void mirrorTree(Node<T> node){
+        if(node == null){
+            return;
+        }
+
+        mirrorTree(node.left);
+        mirrorTree(node.right);
+        Node temp = node.left;
+        node.left = node.right;
+        node.right = temp;
+    }
+
+
+    public boolean isFoldable(){
+        return isFoldable(root);
+    }
+
+    private boolean isFoldable(Node<T> node){
+        if(node == null){
+            return true;
+        }
+
+        mirrorTree(node.right);
+
+        boolean result = areIsoMorphic(node.left, node.right);
+
+        mirrorTree(node.right);
+
+        return  result;
+    }
+
+    public int getMaxConsequtive(){
+        BoxValue box = new BoxValue();
+        getMaxConsequtive(root, box );
+        return  box.value;
+    }
+
+    private int getMaxConsequtive(Node node, BoxValue box){
+        if(node == null){
+            return 0;
+        }
+
+        int left = getMaxConsequtive(node.left, box) + 1;
+        int right = getMaxConsequtive(node.right, box) + 1;
+
+        if(node.left != null && (int)node.data + 1 != (int) node.left.data ){
+            return 1;
+        }
+        if(node.right != null && (int)node.data + 1 != (int) node.right.data ){
+            return 1;
+        }
+
+        int length = Math.max(left, right);
+        box.value = Math.max(box.value , length);
+        return  length;
+
+    }
+
+
+//    public int getMaxUniLength(){
+//        BoxValue box = new BoxValue();
+//        int test = getMaxUniLength(root, box );
+//        return  box.value;
+//    }
+//
+//    private int getMaxUniLength(Node node, BoxValue box){
+//        if(node == null){
+//            return 0;
+//        }
+//
+//
+//        int left = getMaxUniLength(node.left, box) + 1;
+//        int right = getMaxUniLength(node.right, box) + 1;
+//
+//        if(node.left != null && (int)node.data  != (int) node.left.data ){
+//            return 1;
+//        }
+//        if(node.right != null && (int)node.data  != (int) node.right.data ){
+//            return 1;
+//        }
+//
+//
+//        int length = Math.max(left, right);
+//        box.value = Math.max(box.value , length);
+//        return  length;
+//
+//    }
+
+
+    public  boolean areAllLeavesAtSameLevel(){
+        BoxValue box = new BoxValue();
+
+        return areAllLeavesAtSameLevel(root, box, 1);
+    }
+
+    private  boolean areAllLeavesAtSameLevel(Node<T> node, BoxValue box, int level){
+        if(node == null){
+            return true;
+        }
+        if(node.left == null && node.right == null){
+            if(box.value == 0){
+                box.value = level;
+            }else{
+                return  box.value == level ? true : false;
+            }
+        }
+
+        return  areAllLeavesAtSameLevel(node.left, box, level +1) &&
+                areAllLeavesAtSameLevel(node.right, box, level +1);
+    }
+
+    public int diameter(){
+        return  diameter(root);
+    }
+
+    private int diameter(Node<T> node){
+        if(node == null){
+            return 0;
+        }
+
+        int leftHeight = height(node.left);
+        int rightHeight = height(node.right);
+
+        int leftDia = diameter(node.left);
+        int rightDia = diameter(node.right);
+
+
+        return  Math.max(leftHeight + rightHeight +1 , Math.max(leftDia, rightDia)) ;
+
+
+    }
+
+    private int findIndex(T[] arr, int start, int end, int value){
+        for(int i = start; i < end ; i ++){
+            if(arr[i].equals(value)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public Node<T> getTreeFromPreAndInOrder(T[] inOrder, T[] preOrder){
+        BoxValue preIndex = new BoxValue();
+        return  getTreeFromPreAndInOrder(inOrder, preOrder, preIndex, 0, inOrder.length  -1);
+    }
+
+    private Node<T>getTreeFromPreAndInOrder(T[] inOrder, T[] preOrder, BoxValue preIndex, int start, int end){
+        if(start >  end || preIndex.value >= preOrder.length){
+            return null;
+        }
+        Node<T> node = new Node<>(preOrder[preIndex.value]);
+        preIndex.value ++;
+
+        System.out.println(node.data);
+
+        int inOrderIndex = findIndex(inOrder, start, end, (Integer) node.data);
+
+        node.left = getTreeFromPreAndInOrder(inOrder, preOrder, preIndex, start, inOrderIndex -1);
+        node.right = getTreeFromPreAndInOrder(inOrder, preOrder, preIndex, inOrderIndex+1 , end);
+
+
+
+        return node;
+
+    }
+
+
+
+    /// endregion
+
 
 
 

@@ -7,21 +7,43 @@ public class Main {
     public static void main(String[] args) {
 
         Tree<Integer> tree = new Tree<>();
-        tree.root = createTree();
-        tree.printZigZag();
-       // System.out.println(tree.height());
+//        tree.root = createTree();
+//        tree.printZigZag();
+//       // System.out.println(tree.height());
+//
+//        Node<Integer> node1 = generateSameNodes1();
+//        Node<Integer> node2 = generateSameNodes2();
+//        System.out.println(tree.areIsoMorphic(node1, node2));
+//
+//        printAllRootToLeaf(tree);
+//        printSumRootToLeaf(tree);
+//
+//        System.out.println(hasPathSum(tree, 21));
 
-        Node<Integer> node1 = generateSameNodes1();
-        Node<Integer> node2 = generateSameNodes2();
-        System.out.println(tree.areIsoMorphic(node1, node2));
+//         tree.root = createTreeForMirror();
+//
+//         tree.mirrorTree();
+//
+//         tree.levelOrder();
 
-        printAllRootToLeaf(tree);
-        printSumRootToLeaf(tree);
+//        tree.root = createTreeForIsFoldable();
+//        System.out.println(tree.isFoldable());
 
-        System.out.println(hasPathSum(tree, 21));
+//        tree.root = createTreeForGetMaxUniLength();
+//
+//        System.out.println(tree.getMaxUniLength());
+
+        Integer[] inOrder = {8,4,9,2,5,10,1,6,3,7,11};
+        Integer[] preOrder = {1,2,4,8,9,5,10,3,6,7,11};
+
+        Node<Integer> node = tree.getTreeFromPreAndInOrder(inOrder, preOrder);
+        System.out.println();
+
 
 
     }
+
+    /// region Class 1
 
     private static Node<Integer> createTree(){
         Node<Integer> root = new Node(1);
@@ -127,4 +149,78 @@ public class Main {
         return  hasPathSum(node.left, sum - node.data) || hasPathSum(node.right, sum - node.data);
 
     }
+    /// endregion
+
+
+    /// region class 2
+
+    private static Node<Integer> createTreeForMirror(){
+        Node<Integer> root = new Node(1);
+
+        // Second level
+        root.left = new Node<>(2);
+        root.right = new Node<>(3);
+
+        // Third Level
+        root.left.left = new Node<>(4);
+        root.left.right = new Node<>(5);
+        root.right.left = new Node<>(6);
+
+
+        return root;
+    }
+
+    private static Node<Integer> createTreeForIsFoldable(){
+        Node<Integer> root = new Node(1);
+
+        // Second level
+        root.left = new Node<>(2);
+        root.right = new Node<>(3);
+
+        // Third Level
+        root.left.left = new Node<>(4);
+        root.right.right = new Node<>(5);
+
+
+        return root;
+    }
+
+    private static Node<Integer> createTreeForGetMaxConsequtive(){
+        Node<Integer> root = new Node(1);
+
+        // Second level
+        root.left = new Node<>(2);
+        root.right = new Node<>(2);
+
+        // Third Level
+        root.left.left = new Node<>(7);
+        root.left.right = new Node<>(6);
+
+        root.right.right = new Node<>(3);
+        root.right.right.right = new Node<>(5);
+
+        return root;
+    }
+
+
+    private static Node<Integer> createTreeForGetMaxUniLength(){
+        Node<Integer> root = new Node(1);
+
+        // Second level
+        root.left = new Node<>(1);
+        root.right = new Node<>(2);
+
+        // Third Level
+        root.left.left = new Node<>(7);
+        root.left.right = new Node<>(1);
+        root.left.right.left = new Node<>(1);
+
+
+        root.right.right = new Node<>(2);
+        root.right.right.right = new Node<>(5);
+
+        return root;
+    }
+
+    /// endregion
 }
