@@ -7,6 +7,8 @@ public class Main {
     public static void main(String[] args) {
 
         Tree<Integer> tree = new Tree<>();
+        tree.root = createTree2();
+        System.out.println(tree.diameter());
 //        tree.root = createTree();
 //        tree.printZigZag();
 //       // System.out.println(tree.height());
@@ -33,17 +35,67 @@ public class Main {
 //
 //        System.out.println(tree.getMaxUniLength());
 
-        Integer[] inOrder = {8,4,9,2,5,10,1,6,3,7,11};
-        Integer[] preOrder = {1,2,4,8,9,5,10,3,6,7,11};
-
-        Node<Integer> node = tree.getTreeFromPreAndInOrder(inOrder, preOrder);
-        System.out.println();
+//        Integer[] inOrder = {8,4,9,2,5,10,1,6,3,7,11};
+//        Integer[] preOrder = {1,2,4,8,9,5,10,3,6,7,11};
+//
+//        Node<Integer> node = tree.getTreeFromPreAndInOrder(inOrder, preOrder);
+//        System.out.println();
 
 
 
     }
 
     /// region Class 1
+
+    private static Node<Integer> createTree2(){
+        Node<Integer> root = new Node(1);
+
+        // Second level
+        root.left = new Node<>(2);
+        root.right = new Node<>(3);
+
+        // Third Level
+        root.left.left = new Node<>(4);
+        root.left.right = new Node<>(5);
+
+        root.left.left.left = new Node<>(6);
+        root.left.left.right = new Node<>(7);
+        root.left.left.right.left = new Node<>(8);
+        root.left.left.right.left.right = new Node<>(9);
+
+        root.left.right.right = new Node<>(10);
+        root.left.right.right.left = new Node<>(11);
+        root.left.right.right.right = new Node<>(12);
+        root.left.right.right.right.left = new Node<>(13);
+
+
+
+
+        return root;
+    }
+
+    private static Node<Integer> createTree1(){
+        Node<Integer> root = new Node(1);
+
+        // Second level
+        root.left = new Node<>(4);
+        root.right = new Node<>(3);
+
+        // Third Level
+        root.left.left = new Node<>(2);
+        root.left.right = new Node<>(5);
+        root.right.right = new Node<>(8);
+
+        // Fourth Level
+        root.left.right.left = new Node<>(6);
+        root.right.right.left = new Node<>(7);
+
+        root.right.right.left.left = new Node<>(0);
+        root.right.right.left.right = new Node<>(9);
+
+
+        return root;
+    }
 
     private static Node<Integer> createTree(){
         Node<Integer> root = new Node(1);

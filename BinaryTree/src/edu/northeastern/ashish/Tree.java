@@ -449,24 +449,23 @@ public class Tree <T>{
                 areAllLeavesAtSameLevel(node.right, box, level +1);
     }
 
+
+
     public int diameter(){
-        return  diameter(root);
+        BoxValue box = new BoxValue();
+        box.value = Integer.MIN_VALUE;
+        diameter(root, box);
+        return box.value;
     }
 
-    private int diameter(Node<T> node){
-        if(node == null){
-            return 0;
+    private void  diameter(Node<T> node, BoxValue box){
+        if(node != null){
+            int leftHeight = height(node.left);
+            int rightHeight = height(node.right);
+            box.value = Math.max(leftHeight + rightHeight , box.value);
+            diameter(node.left, box);
+            diameter(node.right, box);
         }
-
-        int leftHeight = height(node.left);
-        int rightHeight = height(node.right);
-
-        int leftDia = diameter(node.left);
-        int rightDia = diameter(node.right);
-
-
-        return  Math.max(leftHeight + rightHeight +1 , Math.max(leftDia, rightDia)) ;
-
 
     }
 
