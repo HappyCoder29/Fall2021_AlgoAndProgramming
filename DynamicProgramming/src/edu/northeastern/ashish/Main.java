@@ -25,9 +25,22 @@ public class Main {
 //        int[] arr = {0,1,0,3,2,3};
 //        System.out.println(longestIncreasingSubSequence(arr));
 
-        int[] jumps = {1,3,5,8,9,2,6,7};
-        System.out.println(minJumpsToReachEnd(jumps));
+//        int[] jumps = {1,3,5,8,9,2,6,7};
+//        System.out.println(minJumpsToReachEnd(jumps));
+       // System.out.println(tribonacciTabulization(5));
+
+//        int[] arr = {1,3,2,5,6,10,4};
+//        System.out.println(minCostClimbingStairs(arr));
+
+      //  System.out.println(getMaxMatchingSubstring("xybcdz", "abcdxye"));
+        int[] coins = {2,4,5};
+        System.out.println(numberOfWaysToReachTotal(coins, 11));
+
+
     }
+
+
+    // region Class 1
 
     // O(2^n)
     private static int findFib(int n){
@@ -90,7 +103,7 @@ public class Main {
         for(int i = 1 ; i < rows; i ++){
             for(int j = 1; j < cols; j ++){
                 table[i][j] = matrix[i][j] + Math.min(table[i-1][j-1],
-                                                    Math.min(table[i-1][j], table[i][j-1]));
+                        Math.min(table[i-1][j], table[i][j-1]));
             }
         }
 
@@ -239,6 +252,238 @@ public class Main {
 
 
     }
+    // endregion
+
+
+
+    // region Class 2
+
+    private static int tribonacciRecursive(int n){
+
+        if( n == 0){
+            return  0;
+        }
+        if(n == 1 || n == 2){
+            return 1;
+        }
+
+        return  tribonacciRecursive(n-3) + tribonacciRecursive(n-2) + tribonacciRecursive(n-1);
+
+    }
+
+    private static int tribonacciTabulization(int n){
+        if( n == 0){
+            return  0;
+        }
+        if(n == 1 || n == 2){
+            return 1;
+        }
+
+        int[] arr = new int[n+1];
+        arr[0] = 0;
+        arr[1] = 1;
+        arr[2] = 1;
+
+        for(int i = 3; i < arr.length; i ++){
+            arr[i] = arr[i-1] + arr[i-2] + arr[i-3];
+        }
+        return arr[arr.length -1];
+    }
+
+    private static int houseRobber(int[] arr){
+        if(arr == null || arr.length == 0){
+            return 0;
+        }
+        if(arr.length == 1){
+            return arr[0];// there is only one house to rob
+        }
+        if(arr.length == 2){
+            return Math.max(arr[0], arr[1]);// If there are 2 houses we will get the max of two houses
+        }
+
+        // we have more than 2 houses
+        int[] maxArray = new int[arr.length];
+        maxArray[0] = arr[0];
+        maxArray[1] = Math.max(arr[0], arr[1]);
+        for(int i = 2; i < arr.length; i ++){
+            maxArray[i] = Math.max(arr[i] + maxArray[i-2], maxArray[i-1]);
+        }
+
+        int len = arr.length;
+        int index = len -1;
+        if(maxArray[index] == maxArray[index -1]){
+            index = index -1;
+        }
+
+        while(index > 0){
+            if(maxArray[index] == maxArray[index -1]){
+                System.out.print(arr[index -1]  + ",");
+                index = index -1;
+            }else{
+                System.out.print(arr[index]  + ",");
+                index = index -2;
+            }
+        }
+        if(index == 0 ){
+            System.out.print(arr[index]  );
+        }
+
+        System.out.println();
+
+
+        return maxArray[arr.length -1];
+
+
+    }
+
+    private static int minCostClimbingStairs(int[] arr){
+        // declare an array
+        int maxArray[] = new int[arr.length];
+
+        // base case
+        if (arr.length == 1)
+            return arr[0];
+
+        maxArray[0] = arr[0];
+        maxArray[1] = arr[1];
+
+        // iterate for finding the cost
+        for (int i = 2; i < arr.length; i++)
+        {
+            maxArray[i] = Math.min(maxArray[i - 1],
+                    maxArray[i - 2]) + arr[i];
+        }
+
+        return Math.min(maxArray[arr.length - 2],
+                maxArray[arr.length - 1]);
+    }
+
+
+    private static int getMaxMatchingSubstring(String str1, String str2){
+        if(str1 == null || str2 == null || str1.length() == 0 || str2.length() == 0){
+            return 0;
+        }
+
+        int rows = str1.length() + 1;
+        int cols=  str2.length() + 1;
+
+        int[][] matrix = new int[rows ][cols];
+
+        int maxMatching = 0;
+        int indexX = -1;
+        for(int i = 1 ; i < rows; i ++){
+            for(int j = 1; j < cols ; j ++){
+                if(str1.charAt(i-1) == str2.charAt(j-1)){
+                    matrix[i][j] = matrix[i-1][j-1] + 1;// Take the diagonal matching and add one to it
+                }else{
+                    matrix[i][j] = 0;
+                }
+                if(maxMatching < matrix[i][j]){
+                    maxMatching  = matrix[i][j];
+                    indexX = i;
+                }
+            }
+        }
+
+        String maxSubstring = str1.substring(indexX - maxMatching, indexX);
+
+        return maxMatching;
+    }
+
+    private static int minCoinsToReachTotal(int[] coins, int total){
+        if(coins == null || coins.length == 0){
+            return 0;
+        }
+        if(total < 0){
+            return 0;
+        }
+
+        int rows = coins.length +1;
+        int cols = total +1;
+        int[][] matrix = new int[rows][cols];
+
+        // fil;l the 0'th col by 0 and remaining as Infinite
+        for(int i = 0 ; i < rows; i++ ){
+            for(int j = 0 ; j < cols; j ++){
+                if(j == 0){
+                    matrix[i][j] = 0;
+                }else{
+                    matrix[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+
+        for(int i = 1 ; i < rows; i ++){
+            int coinValue = coins[i-1];
+            for(int j = 1; j < cols; j ++){
+
+                if(j < coinValue){
+                    matrix[i][j] = matrix[i-1][j];// Till the current coin denomination is not reached
+                    // copy the top value
+                }else{
+                    if(matrix[i][j- coinValue] != Integer.MAX_VALUE){
+                        matrix[i][j] = Math.min( matrix[i-1][j], matrix[i][j- coinValue] + 1);
+                        // Get the min of Top or same row - coin denomination value + 1
+                    }else{
+                        matrix[i][j] = matrix[i-1][j];// Get the top one
+                    }
+                }
+            }
+        }
+
+
+
+        return  matrix[rows-1][cols-1];
+    }
+
+
+    private static int numberOfWaysToReachTotal(int[] coins, int total) {
+        if(coins == null || coins.length == 0){
+            return 0;
+        }
+        if(total < 0){
+            return 0;
+        }
+
+        int rows = coins.length +1;
+        int cols = total +1;
+        int[][] matrix = new int[rows][cols];
+        // fill the 0'th col by 1 and remaining as Infinite
+        for(int i = 0 ; i < rows; i++ ){
+            for(int j = 0 ; j < cols; j ++){
+                if(j == 0){
+                    matrix[i][j] = 1;// Since there is one way to fulfill giving back 1 $
+                }else{
+                    matrix[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+
+        for(int i = 1 ; i < rows; i ++){
+            int coinValue = coins[i-1];
+            for(int j = 1; j < cols; j ++){
+
+                if(j < coinValue){
+                    matrix[i][j] = matrix[i-1][j];// Till the current coin denomination is not reached
+                    // copy the top value
+                }else{
+                    // get the sum of top value and the left value if eityher of them is Infinite
+                    // dont add that value
+                    int sum = matrix[i-1][j] != Integer.MAX_VALUE ? matrix[i-1][j] : 0;
+                    sum += matrix[i][j- coinValue] != Integer.MAX_VALUE ? matrix[i][j- coinValue] : 0;
+                    if(sum != 0) {
+                        matrix[i][j] = sum;
+                    }
+                }
+            }
+        }
+
+        return matrix[rows-1][cols-1];
+
+
+    }
+
+        // endregion
 
 
 
