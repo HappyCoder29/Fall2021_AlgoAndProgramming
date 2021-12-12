@@ -6,7 +6,10 @@ public class Main {
 
         Graph graph = initialize();
        // graph.depthFirstSearch("A");
-        System.out.println(graph.containsCycleGraphColoring());
+        //System.out.println(graph.containsCycleGraphColoring());
+
+        graph.printAllPaths("A", "D");
+
         System.out.println();
 
     }
@@ -26,6 +29,9 @@ public class Main {
         graph.addEdge("E", "D");
         graph.addEdge("E", "F");
         graph.addEdge("D", "B");
+        graph.addEdge("C", "D");
+        graph.addEdge("C", "B");
+
 
         return graph;
     }

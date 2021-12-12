@@ -248,6 +248,42 @@ public class Graph {
         return false;
     }
 
+    public void printAllPaths(String source, String dest){
+        source = source.toUpperCase();
+        dest = dest.toUpperCase();
+
+        if( !nodes.containsKey(source) || !nodes.containsKey(dest) ){
+            return;
+        }
+
+        LinkedList<String> visited = new LinkedList<>();
+        printAllPaths(visited, source, dest);
+
+    }
+
+    private void printAllPaths(LinkedList<String> visited, String current, String dest){
+        if( visited.contains(current) ){
+            return;
+        }
+        if(dest == current){
+            for (String str : visited) {
+                System.out.print(str + " -> ");
+            }
+            System.out.println(dest);
+        }
+
+        visited.add(current);
+
+        Node node = nodes.get(current);
+        for (Edge edge : node.getListEdges()) {
+            if( ! visited.contains(edge.endNode) ){
+                printAllPaths(visited, edge.endNode, dest);
+            }
+        }
+
+        visited.remove(current);
+    }
+
 
 
 
